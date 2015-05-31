@@ -3,6 +3,8 @@ GIT
 file:///C:/Program%20Files/Git/doc/git/html/gittutorial.html
 file:///C:/Program%20Files/Git/doc/git/html/everyday.html
 
+https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control
+
 https://github.com/absolutoslo/datasharing/blob/master/Data%20Scientists%20Toolbox%20Course%20Notes.Rmd
 
 ## config
@@ -19,12 +21,24 @@ $ cd ~/
 ## go back to upper directory
 $ cd ..
 
+#Go to Sublime directory!!!
+$ cd /
+$ cd c:/"Program Files"/"Sublime Text 3"/"Other"
+##Now you are in the directory and can upload files from here!
+####initiate a repository and remember the remote directory to git
+git init
+$ git remote add origin https://github.com/absolutoslo/Backup.git
+$ git push -u origin master
+
+
+#Init - Add remote - Push - Clone
 git init
 $ git remote add origin https://github.com/yourUserNameHere/test-repo.git
 $ git push -u origin master
 
 $ git clone https://github.com/yourUserNameHere/repoNameHere.git
 
+#Add - Commit - Push/Pull/ Branch
 git add .
 git add -u
 git add -A
@@ -37,7 +51,7 @@ git branch
 
 git checkout -b branchname
 
-To switch back to the master branch type
+####To switch back to the master branch type
 $ git checkout master
 
 
