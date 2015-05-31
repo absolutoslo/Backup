@@ -22,14 +22,21 @@ $ cd ~/
 $ cd ..
 
 #Go to Sublime directory!!!
+
+```
 $ cd /
 $ cd c:/"Program Files"/"Sublime Text 3"/"Other"
-##Now you are in the directory and can upload files from here!
-####initiate a repository and remember the remote directory to git
+```
+
+Now you are in the directory and can upload files from here!
+
+##Initiate a repository and remember the remote directory to git
+
+```
 git init
 $ git remote add origin https://github.com/absolutoslo/Backup.git
 $ git push -u origin master
-
+```
 
 #Init - Add remote - Push - Clone
 git init
