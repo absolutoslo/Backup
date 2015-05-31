@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html><head>
+<title>html appunti</title>
+<style>
+body {
+
+
+/* COOL STYLE TEXT */
+	/* font family */
+	font-family: Arial, Helvetica, sans-serif;}
+	/* font family */	
+	{font-family: "Times New Roman", Times, serif;}
+	/* font family */
+	{font-family: "Courier New", Courier, monospace;}
+Google --- FOnt!!!
+<head>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine">
+  </head>
+font="Tangerine"
+
+/* COOL STYLE TEXT */
+/* CON SFUMATURA */
+{text-shadow: 0px 1px 1px #4d4d4d;
+	color: #222;
+	font: 80px 'LeagueGothicRegular';}
+/* UN PO SFUMATA */
+
+{text-shadow: -1px -1px 1px #fff, 1px 1px 1px #000;
+	color: #9c8468;
+	opacity: 0.3;
+	font: 80px 'Museo700';
+}
+#retro h1 {
+	color: #d7ceb2;
+	text-shadow: 3px 3px 0px #2c2e38, 5px 5px 0px #5c5f72;
+	font: 80px 'BazarMedium';
+	letter-spacing: 10px;
+}
+
+
+
+#letterpress h1 {
+	text-shadow: 0px 1px 1px #4d4d4d;
+	color: #222;
+	font: 80px 'LeagueGothicRegular';
+}
+
+
+
+#three-d h1 {
+	color: #fff;
+	text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 0px 3px 0px #777, 0px 4px 0px #666, 0px 5px 0px #555, 0px 6px 0px #444, 0px 7px 0px #333, 0px 8px 7px #001135;
+	font: 80px 'ChunkFiveRegular';
+}
+/* UN PO BOMMBATA */
+h1 {
+
+	display: inline;
+
+	position: relative;
+
+	font: 200px Helvetica, Sans-Serif;
+
+	letter-spacing: -5px;
+
+	color: rgba(0,0,255,0.5); 
+
+}
+
+/* standard background image center */
+{background-image: url('smiley.gif');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center; 
+}
+
+
+</style>
+</head>
+
+<body><article class="markdown-body">
+
+<a href="default.asp">
+  <img src="http://www.w3schools.com/html/pic_mountain.jpg" alt="Mountains" style="width:42px;height:42px;border:0">
+</a> 
+
+<div style="text-align:center">
+<h3> scrivere al centro (html) </h3>
+<img src="https://octodex.github.com/images/yaktocat.png">
+<b>
+ciao come va?
+</b>
+</div>
+
+#### questo dovrebbe essere uguale...
+##### prova di markdown inside html
+[Link a google search](http://windows.microsoft.com/en-GB/windows7/20-pc-shortcuts) 
+
+
+<div style="text-align:center">
+<h4 style="background-color:yellow"><font color="red"> immagine al centro </font></h4>
+</div>
+<h4> immagini a sinistra </h4>
+
+<div style="tex-align:left">
+<img src="https://guides.github.com/images/logo@2x.png">
+<img src="http://bb.goesenroos.nl/DKV/Wonen/20150513201904152/1006_BG-alt.jpg"> </div>
+</div></article></body></html>

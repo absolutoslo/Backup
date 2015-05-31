@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<article>
+<head>
+	<title>MAKE YOUR LIFE SURREAL - Index</title>
+	<style>
+	body {text-align: center;
+		background-image: url('http://wallpaperest.com/wallpapers/artistic-surreal_181948.jpg');
+		background-repeat: no-repeat;
+		background-attachment: fixed;
+  		background-position: center;
+  		}
+	h1, h3 {color: #fff;
+	text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 0px 3px 0px #777, 0px 4px 0px #666, 0px 5px 0px #555, 0px 6px 0px #444;
+	font: 80px 'Courier New';}	
+	h2 {text-shadow: -1px -1px 1px #fff, 1px 1px 1px #000;
+	color: #9c8468;
+	opacity: 0.3;
+	font: 80px 'Museo700';
+}
+	</style>
+</head>
+<body>
+
+<h2 style="color:brown"><big>MAKE YOUR LIFE SURREAL</big></h2>
+<p><cite>Presents</cite></p>
+
+<div>
+<h1><big><b>Comics</b> Collection</big></h1>
+</div>
+<br>
+<p>Ready to <b>START?</b><i><small> Click on a link</small></i></p>
+<br>
+
+<h3><a href="https://googledrive.com/host/0B0VjDYh8tM-Efm80RkZvMkNCYnBHSU44cEptdmRfOVhleEF3c3p3N1FsT2FFa0dPWlgtbWM/calvin%20and%20hobbes%20collection.html"><big>Calvin & Hobbes</big></a></h3>
+
+
+<h3><a href="https://googledrive.com/host/0B0VjDYh8tM-Efm80RkZvMkNCYnBHSU44cEptdmRfOVhleEF3c3p3N1FsT2FFa0dPWlgtbWM/peanuts%20collection.html"><big>Peanuts</big></a></h3>
+
+<hr>
+<p>
+<img src="http://assets.amuniversal.com/2e546f40deb901317193005056a9545d">
+</p>
+<hr>
+<p style="text-shadow: -1px -1px 1px #fff, 1px 1px 1px #000;
+	color: white;
+	opacity: 0.3;
+	font: 15px 'Museo700';
+">Copyright 2015<br>
+Chiara Di Loreto</p>
+</article>
+</body>
+</html>
