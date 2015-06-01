@@ -72,6 +72,7 @@ sentence[2:4]
 [1] "the" "dog" "to"
 sentence[c(1, 3)]
 [1] "walk" "dog"
+
 ## You can also set ranges of values; just provide the values in a vector
 sentence[5:7] <- c('the', 'poop', 'deck')
 sentence[6]
