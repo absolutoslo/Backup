@@ -1,3 +1,10 @@
+body {
+  width: 75em;
+  border: 1px solid white;
+  outline: 1300px solid #fff;
+  margin: 16px auto;
+}
+
 .nav a {
   color: #5a5a5a;
   font-size: 11px;
@@ -6,8 +13,14 @@
   text-transform: uppercase;
 }
 
+.nav li {
+  display: inline;
+  float:right;
+}
+
 .jumbotron {
   background-image:url('http://goo.gl/04j7Nn');
+  background-repeat: no-repeat;
   height: 500px;
 }
 
