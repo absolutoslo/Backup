@@ -1,0 +1,119 @@
+body {
+  width: 75em;
+  text-align: center;
+  border: 1px solid white;
+  outline: 1300px solid #fff;
+  margin: 16px auto;
+}
+  
+p {
+  color: #2D2222;
+  font: 'Courier New';
+  float:bottom;
+}
+
+  /* unvisited link */
+a:link {color: black;
+  text-decoration: none;}
+  /* visited link */
+a:visited {color: black;
+  text-decoration: none;}
+  /* mouse over link */
+a:hover {color: #FFC68D;
+  text-decoration: none;}
+  /* selected link */
+a:active {color: #FFC68D;
+  text-decoration: none;}
+
+
+.nav li {
+  display: inline;
+  font-size: 16px;  
+  font-family: "Lucida Console", Monaco, monospace;
+  font-weight: bold;
+  padding: 10px 10px;
+  letter-spacing: 5px;
+
+}
+
+.container li {
+  display: inline;
+}
+
+.jumbotron {
+  width: 35em;
+  border: 1px solid white;
+  background-image: url('http://pixabay.com/static/uploads/photo/2015/04/27/13/40/spring-flowers-741965_640.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+  float: left;
+}
+
+.jumbotron h2 {
+  text-shadow: -1px -1px 1px #fff, 1px 1px 1px #000;
+  color: brown;
+  opacity: 0.5;
+  font: 16px 'Museo700';
+  font-weight: bold;
+}  
+
+.jumbotron h3 {
+  color: white;
+  text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 0px 3px 0px #777, 0px 4px 0px #666, 0px 5px 0px #555, 0px 6px 0px #444;
+  font: 16px 'Courier New';
+  letter-spacing: 5px;
+}
+
+.jumbotron h4 {
+  color: #2D2222;
+  text-shadow: 0px 1px 1px;
+  font: 16px 'Courier New';
+  font-weight:bold;
+  letter-spacing: 5px;
+}
+  
+.jumbotron p {
+  color: #2D2222;
+  font: 'Courier New';
+}
+
+.prog {
+  width: 35em;
+  border: 1px solid white;
+  background-image: url('http://pixabay.com/static/uploads/photo/2015/04/27/13/40/spring-flowers-741965_640.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+  float: right;
+}
+
+.prog h2 {
+  text-shadow: -1px -1px 1px #fff, 1px 1px 1px #000;
+  color: brown;
+  opacity: 0.5;
+  font: 16px 'Museo700';
+  font-weight: bold;
+}  
+
+.prog h3 {
+  color: white;
+  text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 0px 3px 0px #777, 0px 4px 0px #666, 0px 5px 0px #555, 0px 6px 0px #444;
+  font: 16px 'Courier New';
+  letter-spacing: 5px;
+}
+
+.prog h4 {
+  color: #2D2222;
+  text-shadow: 0px 1px 1px;
+  font: 16px 'Courier New';
+  font-weight:bold;
+  letter-spacing: 5px;
+}
+  
+.prog p {
+  color: #2D2222;
+  font: 'Courier New';
+}
