@@ -17,3 +17,7 @@ or
 
 VAN arriva today - check if more than 1 email:
 =LEN(checkme)-LEN(SUBSTITUTE(checkme,"@",""))
+
+=countif(B:B,B1)>1
+
+=COUNTIF(A:A,A2)

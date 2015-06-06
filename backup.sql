@@ -69,7 +69,22 @@ completed_booking	cancellation type (name)	action?
 1	overbooking / active (to be investigated)	yes
 -13	cancelled by BOOKING (fraudulent)	
 
-yes
+Improved formula with CASE WHEN
+
+select hotelreservation_id, CASE completed_booking
+WHEN '-20' THEN "Cancelled by hotel (waived commission - guest relocated)"
+WHEN '-18' THEN "Cancelled by guest (partially waived fees)"
+WHEN '-14' THEN "Waived fees"
+WHEN '-11' THEN "Cancelled by hotel (reservation statement)"
+WHEN '-10' THEN "Invalid CC"
+WHEN '-8' THEN "No show"
+WHEN '-7' THEN "Cancelled by hotel (other reason)"
+WHEN '-6' THEN "Cancelled by hotel (hotel closed)"
+WHEN '0' THEN "Cancelled by guest"
+WHEN '1' THEN "Overbooking / active"
+WHEN '-13' THEN "Cancelled by BOOKING (fraudulent)"
+ELSE "Never seen before!" END as roomstatus
+from `res`.`B_RoomReservation` where hotelreservation_id in (paste 'booking numbers' here, comma separated);
 
 or
 
