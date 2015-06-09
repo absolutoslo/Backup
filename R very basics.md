@@ -1,11 +1,19 @@
 shttp://tryr.codeschool.com/levels/1/challenges/1
 
 ## R
-getwd()
 
+
+###Get wd - set wd
+```
+getwd()
+[1] "\\\\booking.pcln.com/userdata/AMS9UserHome/cdiloreto/documents"
+setwd("C:/Users/cdiloreto/Desktop")
+getwd()
+[1] "C:/Users/cdiloreto/Desktop"
+```
 
 ##R packages
-
+```
 a <- available.packages()
 head(rownames(a), 3)  ## Show names of the first few packages
 
@@ -14,22 +22,22 @@ install.packages(c("slidify", "ggplot2", "devtools"))
 
 library(slidify)
 search()
+```
 
-
--- Create directory if it does not already exist:
+#####Create directory if it does not already exist:
 if (!file.exists("data")) {
     dir.create("data")
 }
 
-To remove files / directories USE UNLINK()
+#####To remove files / directories USE UNLINK()
 
-Clean environment ---
+###Clean environment ---
 > rm(list = ls())
 > ls()
 character(0)
 
 
-general commands 
+## General commands 
 
 <- to assign (or =)
 
@@ -37,7 +45,10 @@ The : operator is used to create integer sequences
 x<-1:20
 or
 seq(5, 9)
-## seq also allows you to use increments other than 1.
+
+
+seq also allows you to use increments other than 1.
+
 seq(5, 9, 0.5)
 [1] 5.0 5.5 6.0 6.5 7.0 7.5 8.0 8.5 9.0
 
@@ -89,7 +100,9 @@ first
     1
 
 
-Visualizations
+##Visualizations
+
+```
 barplot()
 plot()
 contour() ## 2D
@@ -105,6 +118,9 @@ Sd() function - standard deviation function
 
 Factor() function and plotting with factors
 http://tryr.codeschool.com/levels/5/challenges/10
+```
+
+##Data frames
 
 data.frames() function creates a data frame!
 
@@ -116,15 +132,16 @@ Sum () function exclude NA
 > sum(a, na.rm= TRUE)
 [1] 14
 
+####Class
 
-
-## mixing objects
+mixing objects
 y <- c(1.7,"a")## character
 y <- c(TRUE,2)## numeric
 y <- c("a",TRUE)## character
-## When different objects are mixed in a vector,coercion occurs so that every element in the vector is of the same class
 
-##Objects can be explicitly coerced from one class to another using the as.* functions
+When different objects are mixed in a vector,coercion occurs so that every element in the vector is of the same class
+
+Objects can be explicitly coerced from one class to another using the as.* functions
 x <- 0:6  
 class(x) 
 [ 1 ] "integer" 
@@ -151,8 +168,8 @@ x
 
 matrix() function
 m <- matrix(1:6, nrow =2, ncol =3)
-## reshape matrix with planck() function to assign values
-## dim() function assigns new nrow and ncol
+reshape matrix with planck() function to assign values
+dim() function assigns new nrow and ncol
 
 
 The 'L' suffix creates an integer vector as opposed to a numeric vector.
@@ -177,9 +194,13 @@ The 'cbind' function treats vectors as if they were columns of a matrix. It then
 
 
 
-
+####Subsetting - deprecated!
 
 The single bracket [ operator can be used to subset individual rows of a data frame.
+
+
+The [[ operator can be used with computed indices; $can only be used with literal names *with no quotes
+
 
 Subsetting
 > x <- c("a" , "b" , "c" , "c" , "d" , "a" ) 
@@ -232,8 +253,6 @@ $foo
 $baz
 [1] "hello"
 
-##The [[ operator can be used with computed indices; $can only be used with literal names *with no quotes
-
 Subsetting Nested Elements of a List
 x <- list(a = list( 10 , 12 , 14 ), b = c( 3.14 , 2.81 ))
 > x
@@ -266,6 +285,7 @@ Subsetting matrices
 [1] 6
 > x[2,1]
 [1] 2
+
 ## missing values
 > x[1,]
 [1] 1 3 5
@@ -303,13 +323,13 @@ For text files, Call read.table on "infantry.txt", using tab separators and sett
 Merge files/data frames
 merge(x,y)
 
-###
+```
 files = list.files("directory", full.names=TRUE)
 dat = data.frame()
 for (i in 1:332) {
   dat = rbind(dat,read.csv(files[i])) }
 write.csv(dat, "prova1.csv")
-###
+```
 
 
 You can create a logical vector with the expression x %in% 1:5 and then use the [ operator to subset the original vector x.
@@ -322,7 +342,7 @@ You can get the column names of a data frame with the `names()' function.
 names(test)
 [1] "Ozone"   "Solar.R" "Wind"    "Temp"    "Month"   "Day"
 
-##You can extract the first two rows using the [ operator and an integer sequence to index the rows.
+**You can extract the first two rows using the [ operator and an integer sequence to index the rows.**
 
 You can use the `nrow()' function to compute the number of rows in a data frame.
 > nrow(test)
@@ -341,11 +361,11 @@ The `tail()' function is an easy way to extract the last few elements of an R ob
 The head() function does the opposite (extract head from source directory)
 > head(read.csv("specdata/332.csv"))
 
-##The single bracket [ operator can be used to extract individual rows of a data frame.
+**The single bracket [ operator can be used to extract individual rows of a data frame.**
 
-##The `is.na' function can be used to test for missing values.
+**The `is.na' function can be used to test for missing values.**
 
-##You need to construct a logical vector in R to match the question's requirements. Then use that logical vector to subset the data frame
+You need to construct a logical vector in R to match the question's requirements. Then use that logical vector to subset the data frame
 subset according to two different conditions at the same time -- use &
 data.subset = subset (data, Ozone > 31 & Temp > 90)
 data.subset1 = subset (data, Month == 6)
@@ -353,7 +373,8 @@ data.subset1 = subset (data, Month == 6)
 Subset defined [(1)rows, (2)COLUMNS]
 data.subset = data[c(1,3,6,34), c(3,4,5)]
 
-ROUND function
+##ROUND function
+
 > summary(data$FES)
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
   1.000   1.000   2.000   2.659   4.000   8.000    2445 
@@ -365,7 +386,7 @@ ROUND function
 [1] 2.659
 
 
-Write functions
+####Write functions - deprecated!
 
 add2 = function(x, y){
         x+y
