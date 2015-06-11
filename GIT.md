@@ -1,4 +1,4 @@
-GIT 
+#GIT 
 
 file:///C:/Program%20Files/Git/doc/git/html/gittutorial.html
 file:///C:/Program%20Files/Git/doc/git/html/everyday.html
@@ -11,17 +11,18 @@ https://github.com/absolutoslo/datasharing/blob/master/Data%20Scientists%20Toolb
 $ git config --global user.name "Your Name Here"
 $ git config --global user.email "your_email@example.com"
 
-## config info
+##### config info
 $ git config --list
 
-## create directory
+##### create directory
 $ mkdir ~/
-## navigate to directory
+##### navigate to directory
 $ cd ~/
-## go back to upper directory
+##### go back to upper directory
 $ cd ..
 
-#Go to Sublime directory!!!
+
+###Go to Sublime directory!!!
 
 ```
 $ cd /
@@ -64,3 +65,5 @@ $ git checkout master
 
 
 
+###Error fatal:unable to access github port 443
+`make sure you are out of corporate environment`
