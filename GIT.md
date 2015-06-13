@@ -63,7 +63,28 @@ git checkout -b branchname
 $ git checkout master
 
 
-
+## CLI (Command Line Interface)
+`/` = root directory
+`~` = home directory
+`pwd` = print working directory (current directory)
+`clear` = clear screen
+`ls` = list stuff
+  *  `-a` = see all (hidden)
+  *  `-l` = details
+`cd` = change directory
+`mkdir` = make directory
+`touch` = creates an empty file
+`cp` = copy
+  * `cp <file> <directory>` = copy a file to a directory
+  * `cp -r <directory> <newDirectory>` = copy all documents from directory to new Directory
+          * `-r` = recursive
+`rm` = remove
+  * `-r` = remove entire directories (no undo)
+`mv` = move
+  * `move <file> <directory>` = move file to directory
+  * `move <fileName> <newName>` = rename file
+`echo` = print arguments you give/variables
+`date` = print current date 
 
 ###Error fatal:unable to access github port 443
 `make sure you are out of corporate environment`
