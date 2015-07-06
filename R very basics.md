@@ -24,12 +24,23 @@ library(slidify)
 search()
 ```
 
+###Save history
+```
+savehistory("wdNamehere/HistoryfileName.Rhistory")
+```
+
 #####Create directory if it does not already exist:
+```
 if (!file.exists("data")) {
     dir.create("data")
 }
+```
 
 #####To remove files / directories USE UNLINK()
+From the same wd
+```
+unlink("howmany.files.R")
+```
 
 ###Clean environment ---
 > rm(list = ls())
@@ -84,7 +95,7 @@ sentence[2:4]
 sentence[c(1, 3)]
 [1] "walk" "dog"
 
-## You can also set ranges of values; just provide the values in a vector
+You can also set ranges of values; just provide the values in a vector
 sentence[5:7] <- c('the', 'poop', 'deck')
 sentence[6]
 [1] "poop"
