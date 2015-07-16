@@ -23,6 +23,19 @@ howmany = function(directory) {
 howmany("C:/Program Files")
 [1] 41
 ```
+Sometimes, you may want to find the total number of items contained in a folder, including all the folders in it (recursive = TRUE)
+That's why I crafted the howmany_recursive function
+```
+howmany_recursive = function(directory) {
+  nrow(as.data.frame(list.files(directory, recursive = TRUE)))
+}
+
+> howmany("U:/")
+[1] 33
+> howmany_recursive("U:/")
+[1] 1667
+```
+
 
 #Rbind CSV's
 
@@ -64,11 +77,14 @@ rbind.csv = function(directory) {
 ```
 
 Usage
+Call-use function
 ```
+source('U:/rbind.csv.R')
 rbind.csv("directory name")
 ```
 
 Problems
+
 * if statement to give error if file results.csv exists
-If error: "Make sure the file results.csv does not already exist"
+If error: "Make sure the file results.csv does not already exist" 
 * custom name of the file to create

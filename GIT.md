@@ -14,6 +14,10 @@ $ git config --global user.email "your_email@example.com"
 ##### config info
 $ git config --list
 
+##### List files in the working directory
+$ ls
+##### Print working directory
+$ pwd
 ##### create directory
 $ mkdir ~/
 ##### navigate to directory
