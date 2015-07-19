@@ -22,6 +22,10 @@ $ pwd
 $ mkdir ~/
 ##### navigate to directory
 $ cd ~/
+Go to home directory
+$ cd
+$ cd ~ 
+$ cd $HOME
 ##### go back to upper directory
 $ cd ..
 

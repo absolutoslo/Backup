@@ -29,6 +29,11 @@ search()
 savehistory("wdNamehere/HistoryfileName.Rhistory")
 ```
 
+###Quit R
+```
+quit(save = "ask", status = 0, runLast = TRUE)
+```
+
 #####Create directory if it does not already exist:
 ```
 if (!file.exists("data")) {
