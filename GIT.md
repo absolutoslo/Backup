@@ -28,9 +28,10 @@ $ cd ~
 $ cd $HOME
 ##### go back to upper directory
 $ cd ..
+##### go back to provious directory
+$ cd -
 
-
-###Go to Sublime directory!!!
+###Go to Sublime directory!!! Now by default %SUBLIME%
 
 ```
 $ cd /
