@@ -1,4 +1,4 @@
-rbind.csv = function(directory = getwd()) {          ## set default argument as the wd
+rbind.csv = function(directory = getwd()) {          ## set default directory as the wd
   message("I am processing your results.csv")
   packageStartupMessage("Please wait ... you stupid monkey", appendLF = FALSE)
     howmany = nrow(as.data.frame(list.files(directory)))   # find how many items
