@@ -1,0 +1,35 @@
+<html>
+<head/><body><noscript><meta HTTP-EQUIV="refresh" content="0;url='http://betterexplained.com/examples/birthday/birthday.html?PageSpeed=noscript'"/><style><!--table,div,span,font,p{display:none} --></style><div style="display:block">Please click <a href="http://betterexplained.com/examples/birthday/birthday.html?PageSpeed=noscript">here</a> if you are not redirected within a few seconds.</div></noscript>
+<style>body{font-size:.9em;font-family:Arial}table{font-size:.9em}.title{font-weight:bold}.red{color:red}.item{border:1px solid #ccc;padding-left:10px;padding-right:10px;style:block;float:left;width:25px;text-align:center}.item-matched{border:1px solid red;color:red;padding-left:10px;padding-right:10px;style:block;float:left;width:25px;text-align:center}#status{border:1px solid #ccc;color:#333;padding:4px;margin-top:5px;margin-bottom:5px}#footer{xborder-top:1px solid #ccc;font-size:.6em;text-align:right;clear:both}</style>
+<h2>Try out the birthday paradox</h2>
+<b>
+Items: <input id="items" onChange="newStats()" size="4"></input>
+People: <input id="people" onChange="newStats()" size="4"></input>
+</b>
+<input type="button" id="run" value="Run Trial" onClick="generateRandom(); displayValues();"></input>
+<a href="javascript:void(0)" onClick="reset();">reset</a><br/>
+<div id="status">
+</div>
+<div id="output">
+</div>
+<div id="footer">
+from <a href="http://betterexplained.com">betterexplained.com</a>
+</div>
+<script type="text/psajs" orig_index="0">var items=document.getElementById("items");var people=document.getElementById("people");var output=document.getElementById("output");var status_area=document.getElementById("status");var stats={};newStats();items.value=365;people.value=23;function reset(){newStats();status_area.innerHTML="";output.innerHTML="";}
+function newStats(){stats={};stats.trials=0;stats.matches=0;stats.people=0;stats.items=0;stats.combinations=0;}
+function getData(){stats.items=parseInt(items.value);stats.people=parseInt(people.value);stats.combinations=stats.people*(stats.people-1)/2;stats.chance=(stats.items-1)/stats.items;stats.expected=1-Math.pow(stats.chance,stats.combinations);}
+var values=[];var matches={};function generateRandom(){getData();values=[];matches={};for(var i=0;i<stats.people;i++){var random=Math.ceil(Math.random()*stats.items);values[i]=random;}
+stats.trials++;var hasMatch=false;for(var i=0;i<values.length;i++){if(matches[values[i]]){matches[values[i]]+=1;hasMatch=true;}
+else{matches[values[i]]=1;}}
+if(hasMatch){stats.matches++;}}
+function displayValues(){var str="";var match=false;for(var i=0;i<values.length;i++){var style="item";if(matches[values[i]]>1){style="item-matched";match=true;}
+var n=i+1;str+='<span class = "'+style+'">'+values[i]+'</span>'+'';}
+output.innerHTML=str;if(match){setStatus("Match found!");}
+else{setStatus("No matches.");}
+displayStats();}
+function computeStats(){stats.percent=stats.matches/stats.trials;}
+function displayStats(){computeStats();str="";str+="<table>";str+="<tr>";str+='<td class="title">Number of pairs</td><td>'+stats.combinations+" = ("+stats.people+" * "+(stats.people-1)+")/2"+"</td>";str+="</tr>";str+="<tr>";str+='<td class="title">Chance of a unique pair</td><td>'+formatPercent(stats.chance,4)+" = "+(stats.items-1)+"/"+stats.items+"</td>";str+="</tr>";str+="<tr>";str+='<td class="title">Chance of '+stats.combinations+' unique pairs</td><td>'+formatPercent(1-stats.expected,2)+" = ("+formatPercent(stats.chance,4)+")^"+stats.combinations+"</td>";str+="</tr>";str+="<tr>";str+='<td class="title">Chance of some match</td><td>'+formatPercent(stats.expected,2)+" = 1 - "+formatPercent(1-stats.expected,2)+"</td>";str+="</tr>";str+="<tr>";str+='<td class="title red">Actual Match %</td><td>'+formatPercent(stats.percent,2)+" = ("+stats.matches+"/"+stats.trials+")"+"</td>";str+="</tr>";str+="</table>";setStatus(str);}
+function setStatus(str){status_area.innerHTML=str;}
+function formatPercent(p,n){p*=100;return p.toFixed(n)+"%";}</script>
+<script type="text/javascript" src="/pagespeed_static/js_defer.pbrP1whUgE.js"></script></body>
+</html>

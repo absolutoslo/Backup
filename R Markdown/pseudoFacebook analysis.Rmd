@@ -1,0 +1,183 @@
+---
+title: "Pseudo facebook"
+author: "Chiara"
+date: "Tuesday, August 04, 2015"
+output: html_document
+---
+Get to the directory and read the file into R (tab separated)
+```{r}
+setwd("c:/users/cdiloreto/downloads")
+  pseudoFacebook = read.csv("pseudo_facebook.tsv", sep = "\t")
+  names(pseudoFacebook)
+```
+
+Load ggplot2 and start with a Quick plot `qplot` on the variable `dob_day`
+```{r}
+library(ggplot2)
+  qplot(x = dob_day, data = pseudoFacebook)
+```
+
+###Use discrete position
+With `scale_x_discrete`, divide the x axis into 31 values (days of the month)
+```{r}
+qplot(x = dob_day, data = pseudoFacebook)  +
+    scale_x_discrete(breaks = 1:31)
+```
+
+Check the help for the Discrete positioning with `?scale_x_discrete`
+Notice there are different arguments you can pass on to the function.
+To divide the x axis, we will use `breaks` argument.
+
+###Faceting
+Check help with `?facet_wrap`.
+`facet_wrap` function takes a tilde sign `~` followed by the variable we want to spread our data on.
+```{r}
+qplot(x = dob_day, data = pseudoFacebook)  +
+    scale_x_discrete(breaks = 1:31) +
+    facet_wrap(~dob_month)
+```
+
+Alternatively, you can set the number of columns like this:
+```{r}
+qplot(x = dob_day, data = pseudoFacebook)  +
+    scale_x_discrete(breaks = 1:31) +
+    facet_wrap(~dob_month, ncol = 3)
+```
+
+Now we move on to analyze the `friends_count` variable
+Quick plot
+```{r}
+qplot(x = friend_count, data = pseudoFacebook) +
+ geom_histogram()
+```
+Equivalent ggplot
+```{r}
+ggplot(aes(x = friend_count), data = pseudoFacebook) +
+  geom_histogram()
+```
+
+To fix the plot and limit the axis, we can use the `xlim` argument passed to qplot.
+Alternatively, we can use `scale_x_continuous` function
+```{r}
+qplot(x = friend_count, data = pseudoFacebook, xlim = c(0, 1000))
+
+qplot(x = friend_count, data = pseudoFacebook) +
+  scale_x_continuous(limits = c(0, 1000))
+```
+
+Add a custom binwidth
+```{r}
+qplot(x = friend_count, data = pseudoFacebook, binwidth = 25) +
+    scale_x_continuous(limits = c(0, 1000))
+```
+
+Then, add `breaks` on the x axis using `seq()` function
+```{r}
+qplot(x = friend_count, data = pseudoFacebook, binwidth = 25) +
+    scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50))
+```
+
+Equivalent ggplot syntax
+```{r}
+ggplot(aes(x = friend_count), data = pseudoFacebook) +
+  geom_histogram(binwidth = 25) +
+  scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50))
+```
+
+To find out which gender, male or female, has more friends on an average, we can use the `facet_wrap` function, like this
+```{r}
+qplot(x = friend_count, data = pseudoFacebook, binwidth = 25) +
+      scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50)) +
+      facet_wrap(~gender)
+```
+
+To eliminate the rows that have value `NA` on the gender column, we will use the `is.na()` function with a bank sign `!` before it
+```{r}
+qplot(x = friend_count, data = subset(pseudoFacebook, !is.na(gender)), binwidth = 25) +
+      scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50)) +
+      facet_wrap(~gender)
+```
+
+Using the code `data = subset(pseudoFacebook, !is.na(gender))` is better than using `data = na.omit(pseudoFacebook)` because it will only eliminate the rows with NA values on the gender column and not all the rows that have whatsoever NA value in them.
+
+Now we want to check how many males vs. female observations we have in our data set.
+```{r}
+table(pseudoFacebook$gender)
+```
+Or, include NA's
+```{r}
+table(pseudoFacebook$gender, useNA = "ifany")
+```
+
+###by() function
+By() function uses a dataset `pseudoFacebook$friend_count` and indices it by `pseudoFacebook$gender`, which means the function will
+return a summary of how many friends per gender.
+```{r}
+by(pseudoFacebook$friend_count, pseudoFacebook$gender, summary)
+```
+
+###Tenure
+```{r}
+qplot(x = tenure, data = pseudoFacebook, binwidth = 30,
+      color = I('black'), fill = I('blue'))
+```
+
+#####Analyze tenure by year
+Setting breaks and limits helps reading the plot
+```{r}
+qplot(x = tenure/365, data = pseudoFacebook, binwidth = 0.25,
+      color = I('black'), fill = I('orange')) +
+  scale_x_continuous(breaks = seq(1, 7, 1), limits = c(0,7))
+```
+
+To add labels to the axis, use 'xlab` and `ylab` arguments passed to the qplot function
+```{r}
+qplot(x = tenure/365, data = pseudoFacebook, binwidth = 0.25,
+      xlab = "Number of years using Facebook",
+      ylab = "Number of users",
+      color = I('black'), fill = I('orange')) +
+  scale_x_continuous(breaks = seq(1, 7, 1), limits = c(0,7))
+```
+
+###Age
+```{r}
+qplot(x = age, data = pseudoFacebook, binwidth = 1,
+      color = I('black'), fill = I('red')) +
+  scale_x_continuous(breaks = seq(0, 150, 10), limits = c(10, 120))
+```
+
+It may help to use the `summary` function on `pseudoFacebook$age` to find out what is the min and max values for age in the dataset.
+
+```{r}
+summary(pseudoFacebook$age)
+```
+
+
+###Logarithmic transformation
+For overdispersed data, it is useful to use the logarithmic transformation or transform the values with the square root. See why [here](http://www.r-statistics.com/2013/05/log-transformations-for-skewed-and-wide-distributions-from-practical-data-science-with-r/)
+
+Now back to plotting.
+Create 3 plots in one screen to see the difference.
+* First create the 3 plots and assign variables to each of them
+```{r}
+p1 = qplot(x = friend_count, data = pseudoFacebook)
+p2 = qplot(x = log10(friend_count + 1), data = pseudoFacebook)
+p3 = qplot(x = sqrt(friend_count), data = pseudoFacebook)
+```
+
+* Load gridExtra package
+```{r}
+library(gridExtra)
+```
+
+* Then put the 3 plots in one single screen
+```{r}
+grid.arrange(p1, p2, p3, ncol = 1)
+```
+
+###WWW likes
+```{r}
+qplot(x = www_likes, data = pseudoFacebook) +
+  scale_x_log10()
+```
+

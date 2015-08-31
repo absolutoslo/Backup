@@ -1,0 +1,18 @@
+---
+title: "Selenium - how are you doing?"
+author: "Chiara"
+date: "Monday, August 31, 2015"
+output: html_document
+---
+
+read the data
+
+```{r}
+selenium = read.csv("c:/users/cdiloreto/desktop/28-08-2015.csv")
+```
+
+
+```{r}
+selenium$last_change = format.Date(selenium$last_change)
+min(selenium$last_change)
+```
