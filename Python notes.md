@@ -14,7 +14,7 @@ print("%.2f" % total)
 ```
 
 
-Escaping characters
+###Escaping characters
 
 There are some characters that cause problems. For example:
 ```
@@ -24,6 +24,29 @@ This code breaks because Python thinks the apostrophe in 'There's' ends the stri
 ```
 'There\'s a snake in my boot!'
 ```
+
+###Index strings
+https://docs.python.org/3/tutorial/introduction.html
+
+
+Strings can be indexed (subscripted), with the first character having index 0. There is no separate character type; a character is simply a string of size one:
+>>>
+
+>>> word = 'Python'
+>>> word[0]  # character in position 0
+'P'
+>>> word[5]  # character in position 5
+'n'
+
+Indices may also be negative numbers, to start counting from the right:
+>>>
+
+>>> word[-1]  # last character
+'n'
+>>> word[-2]  # second-last character
+'o'
+>>> word[-6]
+'P'
 
 """
 The string "PYTHON" has six characters,
@@ -43,7 +66,7 @@ fifth_letter = "PYTHON"[4]
 print fifth_letter
 ```
 
-Prova script .py
+###Prova script .py
 ```
 name = raw_input("What is your name?")
 quest = raw_input("What is your quest?")
