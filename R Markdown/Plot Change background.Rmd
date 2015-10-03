@@ -1,0 +1,48 @@
+---
+title: "Change background ggplot"
+author: "Chiara"
+date: "October 3, 2015"
+output: html_document
+---
+ 
+```{r}
+
+## Load ggplot
+library(ggplot2)
+
+##Load the dataframe
+pf = read.csv("C:/Users/cdiloreto/Google Drive/Programming/Data sets and exercises/pseudo_facebook.tsv", sep = "\t")
+
+## Sample qplot
+qplot(x = www_likes, data = subset(pf, !is.na(gender)),
+      color = I("black"), fill = gender) +
+  scale_x_continuous(limits = c(0, 10), breaks = seq(0, 10, 1)) +
+  scale_x_log10()
+
+## Change background to white
+
+qplot(x = www_likes, data = subset(pf, !is.na(gender)),
+      color = I("black"), fill = gender) +
+  scale_x_continuous(limits = c(0, 10), breaks = seq(0, 10, 1)) +
+  scale_x_log10() +
+  theme_bw()
+
+
+## Remove grid
+qplot(x = www_likes, data = subset(pf, !is.na(gender)),
+      color = I("black"), fill = gender) +
+  scale_x_continuous(limits = c(0, 10), breaks = seq(0, 10, 1)) +
+  scale_x_log10() +
+  theme(plot.background = element_blank(),
+   panel.grid.major = element_blank(),
+   panel.grid.minor = element_blank(),
+   panel.border = element_blank())
+  
+## Draw axis
+qplot(x = www_likes, data = subset(pf, !is.na(gender)),
+      color = I("black"), fill = gender) +
+  scale_x_continuous(limits = c(0, 10), breaks = seq(0, 10, 1)) +
+  scale_x_log10() +
+theme(axis.line = element_line(color = 'black'))
+
+  

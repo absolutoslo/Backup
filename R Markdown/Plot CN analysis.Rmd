@@ -37,7 +37,7 @@ qplot(data = cn, x = status)
 
 ```{r}
 cn$status = factor(cn$status, levels = c("ready", "rejected", "approved", "pending"))
-qplot(data = cn, x = status, color = I("black"), fill = I("green"))
+qplot(data = cn, x = status, color = I("black"), fill = I("lightgreen"), xlab = "CN's approved (ready) or rejected")
 ```
 
 Check what is the ratio between approved CN's (status == "ready") and rejected CN's (status == "rejected")
@@ -47,6 +47,8 @@ nrow(subset(cn, status == "ready"))
 nrow(subset(cn, status == "rejected"))
 hitrate = nrow(subset(cn, status == "rejected")) / nrow(subset(cn, status == "ready"))
 percentage = round((nrow(subset(cn, status == "rejected"))/nrow(subset(cn, status == "ready"))) ** 100, 1)
+hitrate
+percentage
 ```
 
 **Isolate rejected CN's (the ones we want to investigate)**
@@ -60,7 +62,7 @@ Plot how many rejections vs. approved by FA
 
 ```{r}
 cnp = subset(cn, status %in% c("ready", "rejected"))
-qplot(x = status, data = cnp, color = I("black"), fill = I("lightblue"))
+qplot(x = status, data = cnp, color = I("black"), fill = I("green"), xlab = "CN's approved (ready) or rejected")
 ```
 
 ###Analysis on the codes
@@ -72,6 +74,7 @@ cn$code = factor(cn$code, c("C13 ","CC1 ","CC2 ","CC3 ","CC4 ","CC5 ","CC6 ","CC
 
 ###Analysis on the volumes over time
 First thing, we need to get a column from the table that has a time indicator, in this case last_change. 
+####Format
 Then we need to make sure that the column has the right format for the analysis we need to do (in this case, we are only going to need the day of last_change and don't need the time of the day)
 
 ```{r}
@@ -80,29 +83,51 @@ cn$last_change = as.Date(cn$last_change, "%m/%d/%Y")   ##Note the capital Y for 
 str(cn$last_change)
 ```
 
+Format object `rejected` in the same way
+```{r}
+rejected$last_change = as.Date(rejected$last_change, "%m/%d/%Y")
+```
+
+
 **QPlot the last_change column**, binwidth = 7
 
 ```{r}
 qplot(x = last_change, data = cn, binwidth = 7, 
       color = I("black"), fill = I("orange"), 
-      xlab = "Number of CN processed (approved or rejected)")
+      xlab = "Number of CN processed (approved or rejected) weekly")
 ```
+
+**Qplot the last change for rejected CN's**, binwidth = 7
+
+
+```{r}
+qplot(x = last_change, data = rejected, binwidth = 7,
+      color = I("black"), fill = I("pink"),
+      xlab = "Number of CN rejected weekly")
+```
+
 
 **Alternative with ggplot**
 
 ```{r}
-ggplot(cn, aes(x = last_change), 
-          color = I("black"), fill = I("orange"), 
-          xlab = "Number of CN processed (approved or rejected)") ## doesn't work, figure out!
+ggplot(cn, aes(x = last_change)) +
+        geom_histogram(binwidth = 7, 
+                       color = I("black"), fill = I("orange"), 
+                       xlab = "Number of CN processed (approved or rejected)")
 ```
 
+####Volume of rejections over time
 
 ```{r}
-qplot(x = last_change, data = cn, binwidth = 7, 
-      color = I("black"), fill = I("orange"), 
-      xlab = "Number of CN processed (approved or rejected)") +
-        stat_smooth(aes(y = ))
-##doesnt work anyway
+ggplot(rejected, aes(x = last_change)) +
+        geom_histogram(binwidth = 7, 
+                       color = I("black"), fill = I("pink"))
+```
+
+###this does not work
+```{r}
+ggplot(rejected, aes(x = last_change)) +
+        geom_line()
 ```
 
 
@@ -112,9 +137,46 @@ qplot(x = last_change, data = cn, binwidth = 7,
 DecJan = subset(cn, last_change > "2014-12-01" & last_change < "2015-02-01")
 qplot(x = last_change, data = DecJan, binwidth = 1,
         color = I("black"), fill = I("yellow")) 
-          + geom_density()
+```
+
+
+**Last 3 months analysis**
+
+Query the database adding one colum with dates `date(last_change)`
+
+```
+select *,date(last_change) from fin.ProposedCnDnInvoice
+where created > '2015-06-01'
+```
+Extract data to R
+```{r}
+cn3 = read.csv("C:/Users/cdiloreto/Google Drive/Programming/Data sets and exercises/WORK stuff/CN analysis Jun-Sep.csv")
+```
+
+Plot volumes over 3 months
+```{r}
+cn3$status = factor(cn3$status, levels = c("ready", "rejected", "approved", "pending"))
+qplot(data = cn3, x = status, color = I("black"), fill = I("lightgreen"), xlab = "CN's approved (ready) or rejected")
+```
+
+Rejected CN's over the last 3 months
+```{r}
+rejected3 = subset(cn3, status == "rejected")
+```
+
+Format last_change column
+```{r}
+cn3$date.last_change. = as.Date(cn3$date.last_change.)
+rejected3$date.last_change. = as.Date(rejected3$date.last_change.)
+```
+
+
+```{r}
+qplot(x = date.last_change., data = cn3, binwidth = 7, 
+      color = I("black"), fill = I("orange"), 
+      xlab = "Number of CN processed (approved or rejected) weekly")
 ```
 
 
 Next: create a grid with 2 plots of two different periods in a row
-
+## required gridExtra, which is not available for R version 3.2.2

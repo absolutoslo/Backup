@@ -1,0 +1,354 @@
+---
+title: "Pseudo facebook"
+author: "Chiara"
+started: "Tuesday, August 04, 2015"
+completed: "Saturday, October 03, 2015"
+output: html_document
+---
+
+#Data Analysis with R
+##Udacity course
+[Click here](https://www.udacity.com/me#!/) for Udacity courses 
+
+Get to the directory and read the file into R (tab separated)
+```{r}
+pf = read.csv("C:/Users/cdiloreto/Google Drive/Programming/Data sets and exercises/pseudo_facebook.tsv", sep = "\t")
+names(pf)
+```
+
+Load ggplot2 and start with a Quick plot `qplot` on the variable `dob_day`
+```{r}
+library(ggplot2)
+  qplot(x = dob_day, data = pf)
+```
+
+###Use discrete position
+With `scale_x_discrete`, divide the x axis into 31 values (days of the month)
+```{r}
+qplot(x = dob_day, data = pf)  +
+    scale_x_discrete(breaks = 1:31)
+```
+
+Check the help for the Discrete positioning with `?scale_x_discrete`
+Notice there are different arguments you can pass on to the function.
+To divide the x axis, we will use `breaks` argument.
+
+###Faceting
+Check help with `?facet_wrap`.
+`facet_wrap` function takes a tilde sign `~` followed by the variable we want to spread our data on.
+```{r}
+qplot(x = dob_day, data = pf)  +
+    scale_x_discrete(breaks = 1:31) +
+    facet_wrap(~dob_month)
+```
+
+Alternatively, you can set the number of columns like this:
+```{r}
+qplot(x = dob_day, data = pf)  +
+    scale_x_discrete(breaks = 1:31) +
+    facet_wrap(~dob_month, ncol = 3)
+```
+
+Now we move on to analyze the `friends_count` variable
+Quick plot
+```{r}
+qplot(x = friend_count, data = pf) +
+ geom_histogram()
+```
+Equivalent ggplot
+```{r}
+ggplot(aes(x = friend_count), data = pf) +
+  geom_histogram()
+```
+
+To fix the plot and limit the axis, we can use the `xlim` argument passed to qplot.
+Alternatively, we can use `scale_x_continuous` function
+```{r}
+qplot(x = friend_count, data = pf, xlim = c(0, 1000))
+
+qplot(x = friend_count, data = pf) +
+  scale_x_continuous(limits = c(0, 1000))
+```
+
+Add a custom binwidth
+```{r}
+qplot(x = friend_count, data = pf, binwidth = 25) +
+    scale_x_continuous(limits = c(0, 1000))
+```
+
+Then, add `breaks` on the x axis using `seq()` function
+```{r}
+qplot(x = friend_count, data = pf, binwidth = 25) +
+    scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50))
+```
+
+Equivalent ggplot syntax
+```{r}
+ggplot(aes(x = friend_count), data = pf) +
+  geom_histogram(binwidth = 25) +
+  scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50))
+```
+
+To find out which gender, male or female, has more friends on an average, we can use the `facet_wrap` function, like this
+```{r}
+qplot(x = friend_count, data = pf, binwidth = 25) +
+      scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50)) +
+      facet_wrap(~gender)
+```
+
+To eliminate the rows that have value `NA` on the gender column, we will use the `is.na()` function with a bank sign `!` before it
+```{r}
+qplot(x = friend_count, data = subset(pf, !is.na(gender)), binwidth = 25) +
+      scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50)) +
+      facet_wrap(~gender)
+```
+
+Using the code `data = subset(pf, !is.na(gender))` is better than using `data = na.omit(pf)` because it will only eliminate the rows with NA values on the gender column and not all the rows that have whatsoever NA value in them.
+
+Now we want to check how many males vs. female observations we have in our data set.
+```{r}
+table(pf$gender)
+```
+Or, include NA's
+```{r}
+table(pf$gender, useNA = "ifany")
+```
+
+###by() function
+By() function uses a dataset `pf$friend_count` and indices it by `pf$gender`, which means the function will
+return a summary of how many friends per gender.
+```{r}
+by(pf$friend_count, pf$gender, summary)
+```
+
+###Tenure
+```{r}
+qplot(x = tenure, data = pf, binwidth = 30,
+      color = I('black'), fill = I('blue'))
+```
+
+#####Analyze tenure by year
+Setting breaks and limits helps reading the plot
+```{r}
+qplot(x = tenure/365, data = pf, binwidth = 0.25,
+      color = I('black'), fill = I('orange')) +
+  scale_x_continuous(breaks = seq(1, 7, 1), limits = c(0,7)) +
+  theme_bw()
+```
+
+To add labels to the axis, use 'xlab` and `ylab` arguments passed to the qplot function
+```{r}
+qplot(x = tenure/365, data = pf, binwidth = 0.25,
+      xlab = "Number of years using Facebook",
+      ylab = "Number of users",
+      color = I('black'), fill = I('orange')) +
+  scale_x_continuous(breaks = seq(1, 7, 1), limits = c(0,7))
+```
+
+###Age
+```{r}
+qplot(x = age, data = pf, binwidth = 1,
+      color = I('black'), fill = I('red')) +
+  scale_x_continuous(breaks = seq(0, 150, 10), limits = c(10, 120))
+```
+
+It may help to use the `summary` function on `pf$age` to find out what is the min and max values for age in the dataset.
+
+```{r}
+summary(pf$age)
+```
+
+
+###Logarithmic transformation
+For overdispersed data, it is useful to use the logarithmic transformation or transform the values with the square root. See why [here](http://www.r-statistics.com/2013/05/log-transformations-for-skewed-and-wide-distributions-from-practical-data-science-with-r/)
+
+Now back to plotting.
+Create 3 plots in one screen to see the difference.
+* First create the 3 plots and assign variables to each of them
+```{r}
+p1 = qplot(x = friend_count, data = pf)
+p2 = qplot(x = log10(friend_count + 1), data = pf)
+p3 = qplot(x = sqrt(friend_count), data = pf)
+```
+
+* Load gridExtra package
+```{r}
+library(gridExtra)
+```
+
+* Then put the 3 plots in one single screen
+```{r}
+grid.arrange(p1, p2, p3, ncol = 1)
+```
+
+###WWW likes
+```{r}
+qplot(x = www_likes, data = pf) +
+  scale_x_log10()
+```
+
+
+###Analysis per gender and friend count
+Frequency poligon for comparing two or more distribution
+```{r}
+qplot(x = friend_count, data = subset(pf, !is.na(gender)), binwidth = 10, geom = "freqpoly", color = gender) +
+      scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50))
+```
+
+To find out which gender has more friends on average
+```{r}
+qplot(x = friend_count, y = ..count../sum(..count..), 
+      data = subset(pf, !is.na(gender)), 
+      xlab = "Friend Count", ylab = "Percentage of users with that friend count",
+      binwidth = 10,
+      geom = "freqpoly", color = gender) +
+  scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50))
+```
+
+Equivalent ggplot syntax
+```{r}
+ggplot(aes(x = friend_count, y = ..count../sum(..count..)), data = subset(pf, !is.na(gender))) + 
+      geom_freqpoly(aes(color = gender), binwidth=10) + 
+      scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50)) +
+      xlab('Friend Count') +
+      ylab('Percentage of users with that friend count')
+```
+
+#####Exercise: Create a frequency poligon to show count of www_likes per gender
+```{r}
+qplot(x = www_likes, data = subset(pf, !is.na(gender))) +
+      facet_wrap(~gender)
+```
+
+```{r}
+qplot(x = www_likes, data = subset(pf, !is.na(gender)),
+      geom = "freqpoly", 
+      color = gender) +
+  scale_x_continuous(limits = c(-1, 10), breaks = seq(0, 10, 1)) +
+  scale_x_log10()
+```
+
+```{r}
+qplot(x = www_likes, data = subset(pf, !is.na(gender)),
+      color = I("black"), fill = gender) +
+  scale_x_continuous(limits = c(0, 10), breaks = seq(0, 10, 1)) +
+  scale_x_log10() +
+  theme(plot.background = element_blank(),
+   panel.grid.major = element_blank(),
+   panel.grid.minor = element_blank(),
+   panel.border = element_blank())
+```
+
+#####Exercise: 
+* find www_likes count for males
+```{r}
+pf_males = subset(pf, gender == "male")
+sum(pf_males$www_likes)
+```
+* find which gender has more www_likes
+```{r}
+pf_females = subset(pf, gender == "female")
+sum(pf_females$www_likes)
+
+##To subset for NA's in gender, use the following code
+pf_na = subset(pf, is.na(gender))
+
+## Count
+sum(nrow(pf_females),nrow(pf_males),nrow(pf_na))
+```
+
+
+Solution: use `by()` function to calculate at once
+```{r}
+by(pf$www_likes, pf$gender, sum)
+```
+
+###Boxplot
+```{r}
+qplot(x = gender, y = friend_count,
+      data = subset(pf, !is.na(gender)),
+      ylim = c(0,1000),
+      geom = 'boxplot')
+
+
+qplot(x = gender, y = friend_count,
+      data = subset(pf, !is.na(gender)),
+      geom = 'boxplot') +
+  scale_y_continuous(limits = c(0,1000))
+```
+
+A better way (without eliminating data points from the calculation), is to use the coord.cartesian() layer
+```{r}
+qplot(x = gender, y = friend_count,
+      data = subset(pf, !is.na(gender)),
+      geom = 'boxplot') +
+  coord_cartesian(ylim = c(0,1000))
+
+qplot(x = gender, y = friend_count,
+      data = subset(pf, !is.na(gender)),
+      geom = 'boxplot') +
+  coord_cartesian(ylim = c(0,250)) +
+  theme_bw()
+
+###Use the by function to take a summary of the friend_count variable, spread out over gender
+by(pf$friend_count, pf$gender, summary)
+
+## Answer the same question for friendship_initiated
+by(pf$friendships_initiated, pf$gender, summary)
+
+## Boxplot
+qplot(x = gender, y = friendships_initiated,
+      data = subset(pf, !is.na(gender)),
+      geom = 'boxplot') +
+  coord_cartesian(ylim = c(0, 150)) +
+  theme_bw()
+
+```
+
+###Covert a numeric variable in a boolean variable
+May be needed with data that has a long tail.
+You may want to convert the values of the variable in binary boolean values to analyze whether a feature was used at all, rather than how many times the users used it.
+`mobile_likes` variable has a long tail
+```{r}
+summary(pf$mobile_likes)
+
+##Logical count
+summary(pf$mobile_likes > 0)
+
+##Basic qplot
+qplot(x = mobile_likes, data = pf)
+
+##Histogram
+qplot(x = mobile_likes, data = pf, geom = "freqpoly")
+
+
+```
+
+Convert the variable based on one condition (`ifelse()`)
+```{r}
+##Add a new column to the data frame with NA values in it
+pf$mobile_check_in = NA
+
+##Assign values 0 or 1 based on mobile_likes
+pf$mobile_check_in = ifelse(pf$mobile_likes == 0, 0, 1)
+summary(pf$mobile_check_in)
+
+##Factor the new variable
+pf$mobile_check_in = factor(pf$mobile_check_in)
+summary(pf$mobile_check_in)
+str(pf$mobile_check_in)
+```
+
+#####Exercise: percentage of users of mobile_like feature?
+```{r}
+mobile_users = subset(pf, pf$mobile_check_in == 1)
+mobile_nonusers = subset(pf, pf$mobile_check_in == 0)
+
+##Percentage of users on the total
+nrow(mobile_users)/(nrow(mobile_users) + nrow(mobile_nonusers)) * 100
+```
+
+Solution: 
+```{r}
+sum(pf$mobile_check_in == 1)/length(pf$mobile_check_in) * 100
+```

@@ -5,6 +5,10 @@ date: "Thursday, August 27, 2015"
 output: html_document
 ---
 
+#OpenIntro course
+[click here](https://www.openintro.org/index.php) to find out more!
+Data frame is available [here](http://www.openintro.org/stat/data/present.R)
+
 ```{r}
 source("http://www.openintro.org/stat/data/present.R")
 dim(present)
@@ -23,13 +27,16 @@ max(present$girls)
 present$girls + present$boys
 plot(present$year, present$boys + present$girls, type = "l")
 
-## Qplot versio
+## Qplot version
 qplot(x = year, y = boys + girls, data = present, geom = "line")
 ```
 
 Find out in which year are the highest number or boys + girls born
 ```{r}
 max(present$girls + present$boys)
-qplot(x = year, y = boys + girls, data = present, geom = "line") + scale_x_continuous(breaks = seq(1940, 2002, 1))
+
+qplot(x = year, y = boys + girls, 
+      data = present, geom = "line") + 
+  scale_x_continuous(breaks = seq(1940, 2002, 1))
 ```
 
