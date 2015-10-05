@@ -10,6 +10,11 @@ output: html_document
 ##Udacity course
 [Click here](https://www.udacity.com/me#!/) for Udacity courses 
 
+[GGplot 2 Geoms](http://docs.ggplot2.org/current/)
+
+
+[Documentation for smooths](http://www.ats.ucla.edu/stat/r/faq/smooths.htm)
+
 Get to the directory and read the file into R (tab separated)
 ```{r}
 pf = read.csv("C:/Users/cdiloreto/Google Drive/Programming/Data sets and exercises/pseudo_facebook.tsv", sep = "\t")

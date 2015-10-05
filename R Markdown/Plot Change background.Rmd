@@ -4,6 +4,10 @@ author: "Chiara"
 date: "October 3, 2015"
 output: html_document
 ---
+
+
+[GGplot 2 Geoms](http://docs.ggplot2.org/current/)
+
  
 ```{r}
 

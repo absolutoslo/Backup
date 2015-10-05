@@ -1,0 +1,61 @@
+---
+title: "Gapminder Marriage"
+author: "Chiara"
+date: "October 4, 2015"
+output: html_document
+---
+
+#Data Analysis with R
+##Udacity course
+Check more courses [here](https://www.udacity.com/me#!/)
+
+###Gapminder data
+Click [here](http://www.gapminder.org/data/)
+
+Start with unpacking packages and data set
+```{r}
+fm = read.csv("C:/Users/cdiloreto/Google Drive/Programming/Data sets and exercises/indicator age of marriage.csv")
+View(fm)
+
+library(tidyr)
+library(ggplot2)
+```
+
+```{r}
+# Udacity tip to download data from Gapminder
+# read.csv('data.csv', header = T, row.names = 1, check.names = F)
+
+fm1 = read.csv('C:/Users/cdiloreto/Google Drive/Programming/Data sets and exercises/indicator age of marriage.csv', header = T, row.names = 1, check.names = F)
+
+View(fm1)
+
+### MUCH BETTER!!!! column names more meaningful
+```
+
+
+Investigate the data set
+```{r}
+names(fm)
+names(fm1)
+```
+
+Transpose the matrix!
+Invert axis y with axis x
+```{r}
+inverse_fm = t(fm)
+
+# Convert to data frame object
+inverse_fm = as.data.frame(inverse_fm)
+```
+
+```{r}
+# Subset first row, Afghanistan
+Afghanistan = fm1[1,]
+
+tAfghanistan = t(Afghanistan)
+View(tAfghanistan)
+
+summary(tAfghanistan)
+max(tAfghanistan, na.rm = T)
+```
+

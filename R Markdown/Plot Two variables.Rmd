@@ -1,7 +1,7 @@
 ---
-title: "Plot Two Variables"
+title: "Plot Two variables"
 author: "Chiara"
-started: "October 3, 2015"
+date: "October 4, 2015"
 output: html_document
 ---
 
@@ -9,228 +9,350 @@ output: html_document
 ##Udacity course
 [Click here](https://www.udacity.com/me#!/) for Udacity courses 
 
-Load the diamonds dataset (in ggplot)
+[GGplot 2 Geoms](http://docs.ggplot2.org/current/)
+
+[Documentation for smooths](http://www.ats.ucla.edu/stat/r/faq/smooths.htm)
+
+[Color ggplot](http://www.cookbook-r.com/Graphs/Colors_%28ggplot2%29/)
+
+Continuing from "Plot pseudoFacebook"
 ```{r}
+pf = read.csv("C:/Users/cdiloreto/Google Drive/Programming/Data sets and exercises/pseudo_facebook.tsv", sep = "\t")
+
+# Load ggplot2
 library(ggplot2)
-data(diamonds)
+```
 
-##Count how many observations
-nrow(diamonds)
+Plot 2 Variables, `age` and `friend_count`
+```{r}
+qplot(x = age, y = friend_count, data = pf)
+```
 
-##Count how many variables in the dataset
-ncol(diamonds)
-length(as.list(names(diamonds)))
+Ggplot syntax
+```{r ggplot Syntax}
+ggplot(aes(x = age, y = friend_count), data = pf) + 
+    geom_point(alpha = 1/20) +
+    xlim(13,100)
+```
 
-## Structure of color variable
-str(diamonds$color)
+Use geom_jitter instead of geom_point
+```{r ggplot jitter}
+ggplot(aes(x = age, y = friend_count), data = pf) + 
+    geom_jitter(alpha = 1/20) +
+    xlim(13,100)
+```
 
-## Plot price of diamonds
-qplot(x = price, data = diamonds,
-      color = I("black"), fill = I("blue"))
+#####Exercise: Use `coord_trans` to transform the y-axis
+```{r ggplot coordinates transform}
+ggplot(aes(x = age, y = friend_count), data = pf) + 
+    geom_jitter(alpha = 1/20) +
+    xlim(13,100) +
+  coord_trans(limy = c(0, 1000))
+```
 
-## Summary of price
-summary(diamonds$price)
+Solution:
+```{r}
+ggplot(aes(x = age, y = friend_count), data = pf) + 
+    geom_point(alpha = 1/20) + ## geom_jitter here produces an error
+    xlim(13,100) +
+  coord_trans(y = "sqrt")
 
-##How many diamonds cost less than 500$
-nrow(subset(diamonds, price < 500))
+## Syntax for geom_jitter
+ggplot(aes(x = age, y = friend_count), data = pf) + 
+    geom_jitter(alpha = 1/20, position = position_jitter(h = 0)) + 
+    xlim(13,100) +
+  coord_trans(y = "sqrt")
 
-##How many diamonds cost less than 250$
-nrow(subset(diamonds, price < 250))
+```
 
-##How many diamonds cost $15,000 or more
-nrow(subset(diamonds, price >= 15000))
+Exercise: Investigate the friendships_initiated vs. age
+```{r}
+ggplot(aes(x = age, y = friendships_initiated), data = pf) +
+  geom_point()
+
+# Geom jitter
+ggplot(aes(x = age, y = friendships_initiated), data = pf) +
+  geom_jitter()
+
+# add alpha value
+ggplot(aes(x = age, y = friendships_initiated), data = pf) +
+  geom_jitter(alpha = 1/10)
+```
+
+Solution:
+```{r}
+# same thing as above - different syntax
+ggplot(aes(x = age, y = friendships_initiated), data = pf) +
+  geom_point(alpha = 1/10, position = "jitter")
+
+# transform the y-axis and change syntax to avoid errors
+ggplot(aes(x = age, y = friendships_initiated), data = pf) +
+  geom_jitter(alpha = 1/10, position = position_jitter(h = 0)) +
+  coord_trans(y = "sqrt")
+
+```
+
+###Transform data frames
+####Dplyr package
+```{r}
+library(dplyr)
+
+# Use group_by() to find age groups
+age_groups = group_by(pf, age)
+
+# Then summarise function to find the mean and the median of friend_count by age
+pf.friend_count_by_age = summarise(age_groups, 
+          friend_count_mean = mean(friend_count),
+          friend_count_median = median(friend_count),
+          n = n()) # this paramenter can only be used with summarise function to count number of occurences
+
+# Investigate the new data frame
+head(pf.friend_count_by_age)
+
+```
+
+Alternate code
+```{r}
+pf.friend_count_by_age = pf %>%
+  group_by(age) %>%
+  summarise(friend_count_mean = mean(friend_count),
+            friend_count_median = median(friend_count),
+            n = n()) %>%
+  arrange(age)
+```
+
+Exercise: plot the friend_count_mean vs. age
+```{r}
+ggplot(aes(x = age, y = friend_count_mean), data = pf.friend_count_by_age) + geom_line()
+```
+
+### Overlaying Summaries with Raw Data
+
+```{r Overlaying Summaries with Raw Data}
+# Little try myself
+ggplot(aes(x = age, y = friend_count_mean), data = pf.friend_count_by_age) + geom_line() +
+  geom_point()
+
+# Lesson: copy code from above, raw data
+ggplot(aes(x = age, y = friend_count), data = pf) + 
+    geom_jitter(alpha = 1/20, position = position_jitter(h = 0)) + 
+    xlim(13,100) +
+  coord_trans(y = "sqrt")
+
+# Overlay the mean values
+ggplot(aes(x = age, y = friend_count), data = pf) + 
+    xlim(13,90) +
+    geom_jitter(alpha = 1/20, position = position_jitter(h = 0),
+                color = "orange" ) + 
+    coord_trans(y = "sqrt") +
+    geom_line(stat = "summary", fun.y = mean) +
+    geom_line(stat = "summary", fun.y = median,
+              linetype = 3, color = "red") +
+    geom_line(stat = "summary", fun.y = quantile, probs = 0.9,
+            linetype = 2, color = "blue") +
+  theme_bw()
+
+
+# Change coord_cartesian values to "zoom in"
+ggplot(aes(x = age, y = friend_count), data = pf) + 
+    coord_cartesian(xlim = c(13,70), ylim = c(0,1000)) +
+    geom_jitter(alpha = 1/20, position = position_jitter(h = 0),
+                color = "orange" ) + 
+    geom_line(stat = "summary", fun.y = mean) +
+    geom_line(stat = "summary", fun.y = median,
+              linetype = 2, color = "red") +
+    geom_line(stat = "summary", fun.y = quantile, probs = 0.9,
+            linetype = 2, color = "blue") +
+  theme_bw()
+
+
+```
+
+###Correlation
+```{r}
+?cor.test
+```
+
+Exercise:
+```{r}
+##Find correlation between age and friend_count
+
+cor.test(pf$age, pf$friend_count)
+```
+
+Solution:
+```{r}
+# same as above can be done like this
+with(pf, cor.test(age, friend_count))
+```
+
+Find correlation between age and friend count for users that have less than 70 years. 
+Values above 70 y-o are likely to be incorrect (fake accounts).
+```{r}
+with(subset(pf, age <= 70), cor.test(age, friend_count))
 
 ```
 
 Exercise:
 ```{r}
-# Explore the largest peak in the
-# price histogram you created earlier.
-qplot(x = price, data = diamonds,
-      color = I("black"), fill = I("blue"))
-      
-# Try limiting the x-axis, altering the bin width,
-# and setting different breaks on the x-axis.
-qplot(x = price, data = diamonds,
-      color = I("black"), fill = I("blue"),
-      binwidth = 50) +
-      scale_x_continuous(breaks = seq(250, 1250, 50)) +
-      coord_cartesian(xlim = c(250,1250))
+# Create a scatterplot of likes_received (y)
+# vs. www_likes_received (x).
 
+max(pf$likes_received)
+max(pf$www_likes_received)
 
-# You can save images by using the ggsave() command.
-# ggsave() will save the last plot created.
-# For example...
-#                  qplot(x = price, data = diamonds)
-#                  ggsave('priceHistogram.png')
-
-# ggsave currently recognises the extensions eps/ps, tex (pictex),
-# pdf, jpeg, tiff, png, bmp, svg and wmf (windows only).
+ggplot(aes(x = www_likes_received, y = likes_received), data = pf) +
+    geom_point() +
+    coord_cartesian(xlim = c(0,15000), ylim = c(0,15000))
 
 ```
 
-
+Solution:
 ```{r}
-# Break out the histogram of diamond prices by cut.
-qplot(x = price, data = diamonds,
-      color = I("black"), fill = I("blue"))
+# Plot based on the 95% of the observations (to exclude outliers)
+ggplot(aes(x = www_likes_received, y = likes_received), data = pf) +
+    geom_point() +
+  xlim(0, quantile(pf$www_likes_received, 0.95)) +
+  ylim(0, quantile(pf$likes_received, 0.95))
 
-# You should have five histograms in separate
-# panels on your resulting plot.
+# add geom_smooth curve
+ggplot(aes(x = www_likes_received, y = likes_received), data = pf) +
+    geom_point() +
+  xlim(0, quantile(pf$www_likes_received, 0.95)) +
+  ylim(0, quantile(pf$likes_received, 0.95)) +
+    geom_smooth(method = "lm", color = "red")
 
-# Basic histogram
-qplot(x = price, data = diamonds,
-      color = I("black"), fill = I("blue"))
+# ?geom_smooth
+# lm = linear mode
+```
 
-# Analyze cut
-levels(diamonds$cut)
+Exercise: find correlation between www_likes_received and likes_received
+```{r}
+cor.test(pf$www_likes_received, pf$likes_received)
+cor.test(pf$www_likes_received, pf$likes_received, conf.level = 1)
+```
 
-# By function to check price split over cut
-by(diamonds$price, diamonds$cut, summary)
+
+Exercise: dataframe Mitchell
+```{r}
+library(alr3)
+data("Mitchell")
+head(Mitchell)
+range(Mitchell$Month)
+
+## Line plot
+ggplot(aes(x = Month, y = Temp), data = Mitchell) +
+    geom_line()
+
+## Correlation
+cor.test(Mitchell$Month, Mitchell$Temp)
 
 
-# TYPE YOUR CODE BELOW THE LINE
-# ======================================================
-qplot(x = price, data = diamonds,
-      color = I("black"), fill = I("blue")) +
-  facet_wrap(~cut) +
-  coord_cartesian(xlim = c(0, 5000))
+## Add a scale to x to see variance by month
+ggplot(aes(x = Month, y = Temp), data = Mitchell) +
+    geom_line() +
+  scale_x_discrete(breaks = seq(0,203,12))
+
+## use %% operator (modulus)
+ggplot(aes(x = Month%%12, y = Temp), data = Mitchell) +
+    geom_point() +
+  scale_x_discrete(breaks = seq(0,203,12))
 
 ```
 
+Back to friend_count_mean
 ```{r}
-## Which cut has the highest price diamond?
-by(diamonds$price, diamonds$cut, max)
+ggplot(aes(x = age, y = friend_count_mean), data = pf.friend_count_by_age) + geom_line()
 
-## Which cut has the lowest price diamond?
-by(diamonds$price, diamonds$cut, min)
-
-## Which cut has the lowest mean for price?
-by(diamonds$price, diamonds$cut, mean)
-
-## Function `summary()` uses approximation
-by(diamonds$price, diamonds$cut, summary)
+pf.friend_count_by_age[17:19,]
 
 ```
 
+Exercise: create age_with_months
 ```{r}
-# In the two last exercises, we looked at
-# the distribution for diamonds by cut.
+pf$age_with_months = NA
 
-# Run the code below in R Studio to generate
-# the histogram as a reminder.
+View(pf)
 
-# ===============================================================
+pf$age_with_months = pf$age + (1 - pf$dob_month/12)
 
-qplot(x = price, data = diamonds) + facet_wrap(~cut)
-                                                                               
-# ===============================================================
-
-# In the last exercise, we looked at the summary statistics
-# for diamond price by cut. If we look at the output table, the
-# the median and quartiles are reasonably close to each other.
-
-# diamonds$cut: Fair
-#    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#     337    2050    3282    4359    5206   18570 
-# ------------------------------------------------------------------------ 
-# diamonds$cut: Good
-#    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#     327    1145    3050    3929    5028   18790 
-# ------------------------------------------------------------------------ 
-# diamonds$cut: Very Good
-#    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#     336     912    2648    3982    5373   18820 
-# ------------------------------------------------------------------------ 
-# diamonds$cut: Premium
-#    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#     326    1046    3185    4584    6296   18820 
-# ------------------------------------------------------------------------ 
-# diamonds$cut: Ideal
-#    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#     326     878    1810    3458    4678   18810 
-
-# This means the distributions should be somewhat similar,
-# but the histograms we created don't show that.
-
-# The 'Fair' and 'Good' diamonds appear to have 
-# different distributions compared to the better
-# cut diamonds. They seem somewhat uniform
-# on the left with long tails on the right.
-
-# Let's look in to this more.
-
-# Look up the documentation for facet_wrap in R Studio.
-# Then, scroll back up and add a parameter to facet_wrap so that
-# the y-axis in the histograms is not fixed. You want the y-axis to
-# be different for each histogram.
-
-qplot(x = price, data = diamonds) + facet_wrap(~cut, scales  = "free_y")
+## Solution
+pf$age_with_months = pf$age + (12 - pf$dob_month)/12
 
 ```
 
 ```{r}
-# Create a histogram of price per carat
-# and facet it by cut. You can make adjustments
-# to the code from the previous exercise to get
-# started.
-qplot(x = price, y = carat, data = diamonds) + 
-  facet_wrap(~cut, scales  = "free_y")
+# Create a new data frame called
+# pf.fc_by_age_months that contains
+# the mean friend count, the median friend
+# count, and the number of users in each
+# group of age_with_months. The rows of the
+# data framed should be arranged in increasing
+# order by the age_with_months variable.
+
+# For example, the first two rows of the resulting
+# data frame would look something like...
+
+# age_with_months  friend_count_mean	friend_count_median	n
+#              13            275.0000                   275 2
+#        13.25000            133.2000                   101 11
 
 
-# Adjust the bin width and transform the scale
-# of the x-axis using log10.
-qplot(x = price, y = carat, data = diamonds,
-      binwidth = 500) + 
-  scale_x_log10() +
-  facet_wrap(~cut, scales  = "free_y")
+# See the Instructor Notes for two hints if you get stuck.
+# This programming assignment will automatically be graded.
+
+# DO NOT DELETE THESE NEXT THREE LINES OF CODE
+# ========================================================================
+#pf <- read.delim('/datasets/ud651/pseudo_facebook.tsv')
+#pf$age_with_months <-pf$age + (1 - pf$dob_month / 12)
+#suppressMessages(library(dplyr))
+
+# ENTER YOUR CODE BELOW THIS LINE
+# ========================================================================
+
+# Use group_by() to order by age groups by month
+age_groups_with_month = group_by(pf, age_with_months)
+
+# Then summarise function to find the mean and the median of friend_count by age_with_month
+pf.fc_by_age_months = summarise(age_groups_with_month, 
+          friend_count_mean = mean(friend_count),
+          friend_count_median = median(friend_count),
+          n = n()) # this paramenter can only be used with summarise function to count number of occurences
+
+# Investigate
+head(pf.fc_by_age_months)
+
+# ggplot
+ggplot(aes(x = age_with_months, y = friend_count_mean), data = pf.fc_by_age_months) +
+  geom_point()
+
+### Try to do it with the alternate code
 
 ```
 
+Now join side by side the two graphs, by age and by age_with_month
 ```{r}
+## Subset the data to users younger than 70
+p1 = ggplot(aes(x = age_with_months, y = friend_count_mean), 
+       data = subset(pf.fc_by_age_months, age_with_months < 71)) +
+  geom_line() +
+  geom_smooth()
 
-# Investigate the price of diamonds using box plots,
-# numerical summaries, and one of the following categorical
-# variables: cut, clarity, or color.
+## Subset the other graph with same criteria
+p2 = ggplot(aes(x = age, y = friend_count_mean), 
+       data = subset(pf.friend_count_by_age, age < 71)) + 
+      geom_line() +
+  geom_smooth()
 
-# Boxplot
-qplot(x = cut, y = price, data = diamonds,
-      binwidth = 500, geom = "boxplot") +
-  coord_cartesian(ylim = c(0, 7500))
+## Create a third plot
+p3 = ggplot(aes(x = round(age/5)*5, y = friend_count),
+            data = subset(pf, age < 71)) +
+      geom_line(stat = "summary", fun.y = mean)
 
-# Numerical summaries
-by(diamonds$price, diamonds$color, summary)
-by(diamonds$price, diamonds$clarity, summary)
+##
+library(gridExtra)
 
-# You can save images by using the ggsave() command.
-# ggsave() will save the last plot created.
-# For example...
-#                  qplot(x = price, data = diamonds)
-#                  ggsave('priceHistogram.png')
-
+grid.arrange(p1, p2, p3, ncol = 1)
 ```
 
-```{r}
-## Quartiles
-by(diamonds$price, diamonds$color, IQR)
-
-by(diamonds$price, diamonds$color, summary)
-
-## Analyze price per carat faceted by cut
-qplot(x = carat, y = price, data = diamonds, geom = "boxplot") +
-  coord_cartesian(ylim = c(0, 7500)) +
-  facet_wrap(~cut, scale = "free_x")
-
-# Investigate the price per carat of diamonds across
-# the different colors of diamonds using boxplots.
-qplot(x = carat, y = price, data = diamonds, geom = "boxplot") +
-  coord_cartesian(ylim = c(0, 8000)) +
-  facet_wrap(~color, scale = "free_x",nrow = 2)
-
-# Hint: Use price and carat as a ratio in the parameter y to create the box plots.
-qplot(x = color, y = price/carat, data = diamonds, geom = "boxplot") +
-  coord_cartesian(ylim = c(0, 6000)) +
-  facet_wrap(~color, scale = "free_x",nrow = 2)
-
-```
-
+Check [documentation for smooths](http://www.ats.ucla.edu/stat/r/faq/smooths.htm)
