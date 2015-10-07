@@ -28,7 +28,7 @@ Subset the data so that you create a new data frame that contains
 cars that get 23 or more mpg (miles per gallon). Save it to a new data
 frame called efficient.
 ```{r}
-efficient(subset(mtcars, mpg > 23)
+efficient = subset(mtcars, mpg > 23)
 ```
 
 3. How many cars get more than 23 mpg? Use one of the commands you
@@ -75,8 +75,7 @@ subset(mtcars, qsec <= 16.90)
 
 7. Save the subset of cars that weigh under 2000 pounds (weight is measured in lb/1000) to a variable called lightCars. Print the numbers of cars and the subset to the console.
 ```{r}
-nrow(lightCars)
-lightCars
+
 ```
 
 8. You can also create new variables in a data frame. Let's say you wanted
@@ -171,11 +170,6 @@ subset(mtcars, mpg >= 30 | hp < 60)
 
 
 Once you have the answer, go the [Udacity website](https://www.udacity.com/course/viewer#!/c-ud651/l-729069797/e-804129319/m-811719066) to continue with Lesson 2.
-
-Note: You use brackets around text followed by two parentheses to create a link. There must be no spaces between the brackets and the parentheses. Paste or type the link into the parentheses. This also works on the discussions!
-
-And if you want to see all of your HARD WORK from this file, click
-the **KNIT HTML** button now. (You may or may not need to restart R).
 
 # CONGRATULATIONS
 #### You'll be exploring data soon with your new knowledge of R.

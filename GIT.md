@@ -114,5 +114,20 @@ git clone <repo> <directory>
 
 
 
-###Error fatal:unable to access github port 443
+**Error fatal:unable to access github port 443**
 `make sure you are out of corporate environment`
+
+
+###Find differences between files
+#####GIT
+* place the two files to compare in the same dir
+* files compare1.txt compare2.txt
+* navigate to the dir where the files are stored
+```
+diff - u compare1.txt compare2.txt
+```
+#####Command Prompt
+* same as above
+```
+FC compare1.txt compare2.txt
+```

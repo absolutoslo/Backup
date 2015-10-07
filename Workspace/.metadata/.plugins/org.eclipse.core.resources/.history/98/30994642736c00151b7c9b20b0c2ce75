@@ -1,0 +1,11 @@
+ // declaration
+ int x = 5;
+ int y;
+ // some assignments
+ y = 3;
+ x = 2;
+ x = y;
+ y = 1;
+ // Display values of x and y
+ System.out.println(x); 
+ System.out.println(y);

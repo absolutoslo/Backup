@@ -12,7 +12,6 @@ output: html_document
 
 [GGplot 2 Geoms](http://docs.ggplot2.org/current/)
 
-
 [Documentation for smooths](http://www.ats.ucla.edu/stat/r/faq/smooths.htm)
 
 Get to the directory and read the file into R (tab separated)

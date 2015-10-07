@@ -1,3 +1,6 @@
+# Source with this code
+# source('C:/Users/cdiloreto/Google Drive/Programming/Backup/R functions/rbind.csv.R')
+
 rbind.csv = function(directory = getwd()) {          ## set default directory as the wd
   message("I am processing your results.csv")
   packageStartupMessage("Please wait ... you stupid monkey", appendLF = FALSE)

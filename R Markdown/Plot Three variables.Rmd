@@ -1,0 +1,133 @@
+---
+title: "Plot Three variables"
+author: "Chiara"
+date: "October 6, 2015"
+output: 
+  html_document: 
+    theme: spacelab
+---
+
+
+#Data Analysis with R
+##Udacity course
+[Click here](https://www.udacity.com/me#!/) for Udacity courses 
+
+[GGplot 2 Geoms](http://docs.ggplot2.org/current/)
+
+[Documentation for smooths](http://www.ats.ucla.edu/stat/r/faq/smooths.htm)
+
+[Color ggplot](http://www.cookbook-r.com/Graphs/Colors_%28ggplot2%29/)
+
+[GGplot 2 Themes](http://docs.ggplot2.org/dev/vignettes/themes.html)
+
+
+```{r}
+# Load ggplot2
+library(ggplot2)
+```
+
+Personalized theme
+```{r}
+mytheme = theme(plot.title = element_text(lineheight = 1.2, face = "bold"),
+          panel.background = element_rect(fill = "white"))
+
+```
+
+
+Exercise:
+```{r}
+# Write code to create a new data frame,
+# called 'pf.fc_by_age_gender', that contains
+# information on each age AND gender group.
+
+# The data frame should contain the following variables:
+
+#    mean_friend_count,
+#    median_friend_count,
+#    n (the number of users in each age and gender grouping)
+
+pf = read.csv("C:/Users/cdiloreto/Google Drive/Programming/Data sets and exercises/pseudo_facebook.tsv", sep = "\t")
+
+library(dplyr)
+
+
+pf_by_age_gender = group_by(subset(pf, !is.na(gender)), age, gender)
+
+pf.fc_by_age_gender = summarise(pf_by_age_gender,
+                                mean_friend_count = mean(friend_count),
+                                median_friend_count = median(friend_count),
+                                n = n())
+
+# Alternate solution = chain functions together
+
+pf.fc_by_age_gender = pf %>%
+  filter(!is.na(gender)) %>%
+  group_by(age, gender) %>%
+  summarise(mean_friend_count = mean(friend_count),
+            median_friend_count = median(friend_count),
+            n = n())
+  
+```
+
+Exercise:
+```{r}
+# Create a line graph showing the
+# median friend count over the ages
+# for each gender. Be sure to use
+# the data frame you just created,
+# pf.fc_by_age_gender.
+
+ggplot(aes(x = age, y = mean_friend_count, color = gender), data = pf.fc_by_age_gender) +
+  geom_line() +
+  mytheme
+
+
+# SOlution
+ggplot(aes(x = age, y = median_friend_count), data = pf.fc_by_age_gender) +
+  geom_line(aes(color = gender)) +
+  mytheme
+
+```
+
+##Reshape 2
+```{r}
+library(reshape2)
+
+pf.fc_by_age_gender.wide = dcast(pf.fc_by_age_gender,
+                                 age ~ gender,  ## before the tilde(~) goes the variable 
+                                                ## to be mantained, after the variable to be split      
+                                 value.var = 'median_friend_count')
+
+head(pf.fc_by_age_gender.wide, 5)
+```
+
+Exercise:
+```{r}
+# Plot the ratio of the female to male median
+# friend counts using the data frame
+# pf.fc_by_age_gender.wide.
+
+# Think about what geom you should use.
+# Add a horizontal line to the plot with
+# a y intercept of 1, which will be the
+# base line. Look up the documentation
+# for geom_hline to do that. Use the parameter
+# linetype in geom_hline to make the
+# line dashed.
+
+# The linetype parameter can take the values 0-6:
+# 0 = blank, 1 = solid, 2 = dashed
+# 3 = dotted, 4 = dotdash, 5 = longdash
+# 6 = twodash
+
+ggplot(aes(x = age, y = female/male), data = pf.fc_by_age_gender.wide) +
+  geom_histogram(stat = "identity", color = "black", fill = "deepskyblue") +
+  geom_hline(aes(yintercept = 1), color = "red", linetype = 2)
+
+ggplot(aes(x = age, y = female/male), data = pf.fc_by_age_gender.wide) +
+  geom_density(stat = "identity", fill = "deepskyblue") +
+  geom_hline(aes(yintercept = 1), alpha = 0.7, color = "red", linetype = 2)
+
+
+```
+
