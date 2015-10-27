@@ -84,7 +84,7 @@ ggplot(aes(x = age, y = mean_friend_count, color = gender), data = pf.fc_by_age_
 
 # SOlution
 ggplot(aes(x = age, y = median_friend_count), data = pf.fc_by_age_gender) +
-  geom_line(aes(color = gender)) +
+  geom_line(aes(color = gender), size = 1) +
   mytheme
 
 ```
