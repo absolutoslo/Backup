@@ -3,7 +3,7 @@
 
 rbind.csv = function(directory = getwd()) {          ## set default directory as the wd
   message("I am processing your results.csv")
-  packageStartupMessage("Please wait ... you stupid monkey", appendLF = FALSE)
+  packageStartupMessage("Please wait ...", appendLF = FALSE)
     howmany = nrow(as.data.frame(list.files(directory)))   # find how many items
     files_list = list.files(directory, full.names = TRUE) # list files
     result = data.frame()       # empty data frame
