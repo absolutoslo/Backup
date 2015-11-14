@@ -1,0 +1,21 @@
+---
+title: "Hospital data"
+author: "Chiara"
+date: "November 9, 2015"
+output: html_document
+---
+
+```{r}
+data = read.csv("C:/Users/cdiloreto/Google Drive/Programming/Data sets and exercises/hospital-data.csv")
+
+names(data)
+
+cat(names(data), sep = ",")
+
+data = subset(data, select = c(Provider.Number,Hospital.Name,Address.1,City,State,ZIP.Code,County,Phone.Number,Hospital.Type,Hospital.Ownership,Emergency.Services))
+```
+
+```{r}
+
+```
+

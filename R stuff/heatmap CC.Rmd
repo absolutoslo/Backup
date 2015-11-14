@@ -1,0 +1,27 @@
+---
+title: "Heatmap CC"
+author: "Chiara"
+date: "November 10, 2015"
+output: html_document
+---
+
+```{r}
+cc = read.csv("C:/Users/cdiloreto/google drive/programming/Data sets and exercises/heatmap CC.csv")
+
+library(ggmap)
+
+## Empty Amsterdam map
+
+amsterdam = get_map(location = "c(lon = 4.88969, lat = 52.37403)")
+ggmap(amsterdam)
+
+## easier alternative
+amsterdam = get_map(location = "Amsterdam")
+ggmap(amsterdam)
+
+## work on the file with locations
+str(cc$office_city)
+geocodes = geocode(as.character(cc$office_city))
+
+```
+
